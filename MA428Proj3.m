@@ -1,5 +1,11 @@
-xo=transpose([-1 1 -0.5 2]);
-vo=transpose([1 -0.5 0.5 -1]);
+%EigenValue Problem- Solving Second Order Differential Equations for
+%multiple variables using Numerical Methods and Linearization of second
+%order equations 
+
+xo=transpose([-1 1 -0.5 2% Intial Values of Displacement/Position
+vo=transpose([1 -0.5 0.5 -1]);% Initial Values of Velocity
+%Our system has four masses connected to five springs and three damping
+%constants "mi" is the ith mass in the system.
 m1=1;
 m2=2; 
 m3=3;
@@ -23,12 +29,12 @@ e
 
 
 %solving using linearization, Eig can only be used for the generalized
-%eigenvalue problem, hence we need to remove the lambda^2 term
+%eigenvalue problem, hence we need to remove the lambda^2 term. 
 z=zeros(4,4);
 M1=[C M; M z];
 M2=[K z;z -M];
-[X,e]=eig(M2,-M1);
-y=X(1:4,:);
+[X,e]=eig(M2,-M1);% Generalized Eigenvalue Problem is of the form M2*X= M1*lambda
+y=X(1:4,:);%Solutions associated with displacement
 z=X(5:8,:);
 k=0;
 x(t)=c1*x1(t)+c2*x(t)+c3*x3(t)
@@ -46,10 +52,10 @@ A1 =[x1(:,1) x2(:,1) x1(:,3) x2(:,3) x1(:,5) x2(:,5) x1(:,7) x2(:,7)];% Top Half
 
 A2 =[e1(1,1)*x1(:,1)-x2(:,1)*e2(1,1) e1(1,1)*x2(:,1)+x1(:,1)*e2(1,1) e1(3,3)*x1(:,3)-x2(:,3)*e2(3,3) e1(3,3)*x2(:,3)+x1(:,3)*e2(3,3) e1(5,5)*x1(:,5)-x2(:,5)*e2(5,5) e1(5,5)*x2(:,5)+x1(:,5)*e2(5,5) e1(7,7)*x1(:,7)-x2(:,7)*e2(7,7) e1(7,7)*x2(:,7)+x1(:,7)*e2(7,7)];
 A=vertcat(A1,A2)% Combining the two halves
- y=vertcat(xo,vo);% combining the two initial conditions
- bc=A\y % solving for coefficients
- sym t ;
- ysol=0;
+y=vertcat(xo,vo);% combining the two initial conditions
+bc=A\y % solving for coefficients
+sym t ;
+ysol=0;
  %Create the linear combination of all the coefficients and the matrices 
  for i = 1:2:7
 ysol= exp(e1(i,i)*t)*(c(i).*(x1(:,i).*cos(e2(i,i)*t)-x2(:,i)*sin(e2(i,i)*t)))+ysol;
